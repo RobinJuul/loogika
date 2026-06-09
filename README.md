@@ -3,14 +3,14 @@
 Ligipääsukontrolli poliitikate formaliseerimine epistemilise modaalloogikaga ning
 võrdlus traditsiooniliste mudelitega RBAC ja ABAC.
 
-**Tartu Ülikool — Loogika arvutiteaduses, projekt (2026).**
+**Tartu Ülikool – Loogika arvutiteaduses, projekt (2026).**
 Autor: Robin Juul.
 
 ## Ülevaade
 
 Projekt uurib, millised ligipääsukontrolli omadused on epistemilises
 modaalloogikas loomulikult väljendatavad, kuid RBAC/ABAC raamistikes raskesti või
-üldse mitte formaliseeritavad — eelkõige agendi teadmised ressursside kohta ja
+üldse mitte formaliseeritavad. Eelkõige agendi teadmised ressursside kohta ja
 kõrgema astme teadmised (nt administraatori auditeerimiskohustus "administraator
 teab, et arstil on ligipääs").
 
