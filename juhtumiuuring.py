@@ -175,6 +175,8 @@ def jooksuta_testid():
         print(f"  [{mark}] {kirjeldus}")
         print(f"         {valem_str(valem)}  @ {w}  =>  {tulemus}")
 
+    demo_vaarjuhud(m)
+
     # Kontranäite demonstratsioon: RBAC ei "tea" arsti teadmist.
     print("\nKontranäide — epistemilise omaduse mitte-väljendatavus RBAC-s:")
     audit = admin_audit()
@@ -189,6 +191,47 @@ def jooksuta_testid():
     print("\n" + ("KÕIK TESTID LÄBITUD ✓" if koik_ok else "MÕNI TEST EBAÕNNESTUS ✗"))
     print("=" * 70)
     return koik_ok
+
+
+def demo_vaarjuhud(m):
+    """
+    Selgelt VÄÄR-tulemusega päringud.
+
+    Näitab, et mudelikontrollija arvutab semantikat päriselt, mitte ei kinnita
+    iga valemit. Iga juhu juures on lühike põhjus, miks tulemus on väär. Lõpus
+    sama valem kolmes maailmas — tulemus sõltub mudelist, mitte pole ette antud.
+    """
+    print("\n" + "-" * 70)
+    print("VÄÄR-juhud — kontrollija ei kinnita kõike")
+    print("-" * 70)
+    vaarjuhud = [
+        ("Arst EI tea oma ligipääsu w2-s (seal pole ta raviarst)",
+         "w2", K("arst", aatom("ligipaas_a")),
+         "w2-s pole arst raviarst ega oma ligipääsu, seega ei saa ka teada"),
+
+        ("Õde EI tea oma ligipääsu w3-s (seal pole ta valves)",
+         "w3", K("oe", aatom("ligipaas_o")),
+         "õe ainus järgija w3-st on w3 ise, kus ligipaas_o on väär"),
+
+        ("Arst EI tea õe ligipääsu w1-s — privaatsus",
+         "w1", K("arst", aatom("ligipaas_o")),
+         "arst ei erista w1/w3; w3-s õel ligipääsu pole, seega teadmist ei teki"),
+    ]
+    for kirjeldus, w, valem, miks in vaarjuhud:
+        tulemus = kehtib(m, w, valem)
+        mark = "✓" if tulemus is False else "✗ OOTAMATU"
+        print(f"  [{mark}] {kirjeldus}")
+        print(f"         {valem_str(valem)}  @ {w}  =>  {tulemus}")
+        print(f"         miks: {miks}")
+
+    print("\n" + "-" * 70)
+    print("Sama valem, eri maailmad — tulemus sõltub mudelist, mitte pole ette antud")
+    print("-" * 70)
+    valem = K("arst", aatom("ligipaas_a"))
+    for w in ("w1", "w2", "w3"):
+        print(f"  {valem_str(valem)}  @ {w}  =>  {kehtib(m, w, valem)}")
+    print("  => sama valem annab w1→True, w2→False, w3→True. Tulemus tuleneb")
+    print("     Kripke seosest ja valuatsioonist, ei ole kõvasti sisse kirjutatud.")
 
 
 def demo_susteemivahe():
